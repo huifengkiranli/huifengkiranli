@@ -7,18 +7,17 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: Huifeng's Blog!
-description: Build RFM Data Model by Python for E-Commers.
 github_username: kiranli
 
 # Email and twitter are optional:
-email:
-twitter_username:
+#(email:
+#(twitter_username:
 
 # Set this to true to get LaTeX math equation support
 use_math:
 
 # Add your Google Analytics ID here if you have one and want to use it
-google_analytics:
+#(google_analytics:
 
 # Everything below here can be ignored, unless you want to change the theme entirely
 theme: minima
