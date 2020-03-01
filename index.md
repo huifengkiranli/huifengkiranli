@@ -1,2 +1,2 @@
 Hello There!
-Welcome to this blog 
+Welcome to my blog. 
