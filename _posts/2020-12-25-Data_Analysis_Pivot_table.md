@@ -1,4 +1,6 @@
-# Import data
+# Pibot-table for basketball players performancce analysis
+
+##Import data
 
 
 ```python
@@ -13,7 +15,7 @@ os.chdir('/Users/hui2046/Downloads/SQL+Python/')
 df = pd.read_csv('James_Harden.csv')
 ```
 
-# Data info
+## Data info
 
 
 ```python
@@ -147,7 +149,7 @@ df.info()
     memory usage: 2.1+ KB
 
 
-# pivot_table: index
+## pivot_table: index
 
 
 ```python
@@ -689,7 +691,7 @@ pd.pivot_table(df,index = ['对手','主客场'])
 
 
 ```python
-# 调换两个index顺序，index = ['主客场'，'对手']
+## 调换两个index顺序，index = ['主客场'，'对手']
 
 pd.pivot_table(df, index = ['主客场','对手'])
 ```
@@ -975,7 +977,7 @@ pd.pivot_table(df, index = ['主客场','对手'])
 
 
 
-# pivot_table: Values
+## pivot_table: Values
 
 
 ```python
@@ -1051,7 +1053,7 @@ pd.pivot_table(df,index = ['主客场','胜负'],values = ['得分','助攻','�
 
 
 
-# pivot_table: Aggfunc
+## pivot_table: Aggfunc
 
 
 ```python
@@ -1156,7 +1158,7 @@ pd.pivot_table(df,index = ['主客场','胜负'],values = ['得分','助攻','�
 
 
 
-# pivot_table: Columns
+## pivot_table: Columns
 
 
 ```python
