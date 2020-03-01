@@ -1,4 +1,4 @@
-# Pibot-table for performance analysis
+# Pivot-table for performance analysis
 
 ##Import data
 
