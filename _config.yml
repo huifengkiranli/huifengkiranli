@@ -8,7 +8,8 @@
 
 title: Huifeng
 github_username:  kiranli
-
+![picture](images/IMG_0226.JPG)
+ 
 # Email and twitter are optional:
 #(email:
 #(twitter_username:
@@ -27,6 +28,7 @@ plugins:
   - jekyll-octicons
   - jekyll-github-metadata
 
+
 titles_from_headings:
   enabled:     true
   strip_title: true
@@ -40,3 +42,4 @@ kramdown:
   auto_ids: true
   hard_wrap: false
   syntax_highlighter: rouge
+ 
