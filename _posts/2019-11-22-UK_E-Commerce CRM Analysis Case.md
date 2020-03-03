@@ -157,8 +157,8 @@ RFM中三项R,F,M 的评分标准是需要根据行业特点和公司发展战�
 |  <= 30  | 5      |
 | (30,90]  | 4      |
 | (90,180]   | 3     |
-|  (180,365]  | 2     |
-| > 365 | 1    |
+|  (180,360]  | 2     |
+| > 360 | 1    |
 
 |     F | Fscore |
 | ----- | ----- |
@@ -183,7 +183,7 @@ create table RFMscore as select *,
 (case when R <=30 then 5
       when R >30 and R <=90 then 4
 			when R >90 and R <= 180 then 3
-			when R >180 and R <365 then 2 else 1 end) as 'Rscore',
+			when R >180 and R <360 then 2 else 1 end) as 'Rscore',
 (case when F >80 then 5
       when F >20 and F <=80 then 4
 			when F >10 and F <=20 then 3
