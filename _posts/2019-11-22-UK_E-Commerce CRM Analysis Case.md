@@ -49,7 +49,7 @@ from data2;
 
 结果显示：日期不存在异常值，Quantity、UnitPrice均存在异常值.
 
-### 1. 处理Quantity中的异常值
+### (1). 处理Quantity中的异常值
 ```mysql
 select * from data2 where Quantity <=0;
 ```
@@ -62,7 +62,7 @@ select * from data2 where Quantity <=0;
 delete from data2 where Quantity <=0;
 ```
 
-### 2. 处理UnitPrice的异常值
+### (2). 处理UnitPrice的异常值
 
 ```mysql
 select * from data2 where UnitPrice <=0;
@@ -77,7 +77,7 @@ delete from data2 where UnitPrice <=0;
 ```
 
 ##  - 3. 数据格式一致化处理
-### 1. 日期格式：数据集中InvoiceDate的日期不利于查询，处理代码如下：
+### (1). 日期格式：数据集中InvoiceDate的日期不利于查询，处理代码如下：
 ```mysql
 alter table data2 add column InvoiceDatetime varchar(255) not NULL
 update data2 set InvoiceDatetime = STR_TO_DATE(InvoiceDate,'%m/%d/%Y %H:%i')；
@@ -93,7 +93,7 @@ alter table data2 drop InvoiceDate;
 
 日期处理：(**str_to_date()**)
 
-### 2. RFM模型，还需要增加Monetary列
+### (2). RFM模型，还需要增加Monetary列
 
 ```mysql
 alter table data2 add column Monetary float not NULL
@@ -122,7 +122,7 @@ Notes:  **create table like /as comparison**:
 * 使用CTAS方式创建的表不能是外部表。
 
 # 5. Data Modeling-RFM
-## 1. RFM模型是衡量客户价值和利润贡献能力的重要工具，通过研究客户最近期的购买行为、购买频率以及购买金额来判定客户价值，从而实现对客户精细化地分层，为客户关系管理或者客户营销运营管理提供数据支持。
+## (1). RFM模型是衡量客户价值和利润贡献能力的重要工具，通过研究客户最近期的购买行为、购买频率以及购买金额来判定客户价值，从而实现对客户精细化地分层，为客户关系管理或者客户营销运营管理提供数据支持。
 
 |     Letter | Description |
 | ----------- | ----------- |
@@ -149,7 +149,7 @@ order by R desc, F desc, M desc;
 
 ![UK9](https://kiranli.github.io/images/UK9.png)
 
-## 2. create RFMscore table
+## (2). create RFMscore table
 RFM中三项R,F,M 的评分标准是需要根据行业特点和公司发展战略来定的，每个区间如何定，可以多参考行业报告，对比分析后来确定，因为本文行业是电商行业，所以本文评分标准确定如下：
 
 |     R | Rscore |        
@@ -198,7 +198,7 @@ from RFM;
 
 * 注意 select* 后面的comma别忘记
 
-## 3. create RFMvalue table
+## (3). create RFMvalue table
 ### -1. 首先，根据K-means原理，计算R,F,M的三项的算数平均值Avg，了解分区间后RFMscore与平均值相比，处于怎样的位置，代码如下：
 ```mysql
 select ROUND(AVG(Rscore),1) as Ravg,
