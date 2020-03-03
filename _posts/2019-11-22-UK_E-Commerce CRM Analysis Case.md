@@ -1,4 +1,5 @@
-# MySQL: UK E-Commerce DataModeling
+# MySQL: UK E-Commerce CRM Analysis
+
 # 1. 这是一个跨国数据集，包含2010年12月1日至2011年12月9日之间在英国注册的非商店在线零售的所有交易。该公司主要销售各种独特的礼品，许多客户是该公司批发商.
 # 2. Operations management issues: 该公司客户主要集中在哪些国家？如何精细化客户群体及进一步营销管理？ 
 # 3. Data information: 该数据集时间跨度为2010年12月1日至2011年12月9日，共包含541909条记录，8个字段： CustomerID, InvoiceNo, InvoiceDate, Quantity, UnitPrice, Country，Description, StockCode
@@ -217,6 +218,7 @@ create table RFMvalue as select *,
 ![UK12](images/UK12.png)
 
 ### -3. segment customers： 根据RFM模型理论将客户分层
+
 ![UK13](images/UK13.png)
 
 根据RFM（图片来源：point小数点）理论，上升箭头表示大于均值，向下箭头表示小于均值。
@@ -241,4 +243,4 @@ from RFMvalue;
 
 ![UK14](images/UK14.png)
 
-下个篇章将做数据可视化的练习。
+下个篇章将做数据可视化Power BI的练习。
