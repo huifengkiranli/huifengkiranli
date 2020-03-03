@@ -11,7 +11,7 @@ create table data1
 as select CustomerID,InvoiceNo,InvoiceDate,Quantity,UnitPrice,Country from UK_data
 select * from data1
 ```
-![UK1](images/UK1.png)
+![UK1](https://kiranli.github.io/images/UK1.png)
 ## -1. 处理缺失值null, case when then else end：
 ``` mysql
 select sum(case when CustomerID is null then 1 else 0 end) as 'sum_customerid',
@@ -24,7 +24,7 @@ from data1;
 ```
 * 注意点：MySQL does not accept spaces between function name and parenthesis, unless you have set SQL_MODE=IGNORE_SPACE but that gives you other undesirable side effects, eg. **sum_()**.
 
-![UK2](images/UK2.png)
+![UK2](https://kiranli.github.io/images/UK2.png)
 
 查询结果可知，customerid存有135080个null，缺失率占比24.9%，数据丢失比较严重，需询问相关负责人查找原因，因无法知晓原因，将缺失值全部换成0处理，并把结果重新创建一个表data2, code 如下：
 
@@ -45,7 +45,7 @@ select max(InvoiceDate),min(InvoiceDate), max(Quantity),min(Quantity),
 max(UnitPrice),min(UnitPrice)
 from data2;
 ```
-![UK3](images/UK3.png)
+![UK3](https://kiranli.github.io/images/UK3.png)
 
 结果显示：日期不存在异常值，Quantity、UnitPrice均存在异常值.
 
@@ -54,7 +54,7 @@ from data2;
 select * from data2 where Quantity <=0;
 ```
 
-![UK4](images/UK4.png)
+![UK4](https://kiranli.github.io/images/UK4.png)
 
 可见Quantity中的异常值，共10624个，共同特征：InvoiceNo.皆以C开头，按实际分析，应该为退货处理，需要重点分析是什么原因造成的退货？本次练习主要是建立RFM模型，不分析退货原因，所以需把这些异常值删除 **delete from...where..**，实现代码如下:
 
@@ -68,7 +68,7 @@ delete from data2 where Quantity <=0;
 select * from data2 where UnitPrice <=0;
 ```
 
-![UK5](images/UK5.png)
+![UK5](https://kiranli.github.io/images/UK5.png)
 
 查询可知:1181条记录单价大多数为零，实际分析应该为赠品，对于单价为负值的，应为公司损失的商品，所以这两种应删除, **delete from ...where...**
 
@@ -89,7 +89,7 @@ update data2 set InvoiceDatetime = STR_TO_DATE(InvoiceDate,'%m/%d/%Y %H:%i')；
 alter table data2 drop InvoiceDate;
 ```
 
-![UK6](images/UK6.png)
+![UK6](https://kiranli.github.io/images/UK6.png)
 
 日期处理：(**str_to_date()**)
 
@@ -100,7 +100,7 @@ alter table data2 add column Monetary float not NULL
 update data2 set Monetary = Quantity*UnitPrice;
 ```
 
-![UK7](images/UK7.png)
+![UK7](https://kiranli.github.io/images/UK7.png)
 
 ## - 4. 重复值处理
 新建表data3用以insert distinct * from data2, code as belows:
@@ -111,7 +111,7 @@ insert into data3 select distinct* from data2
 select * from data3;
 ```
 
-![UK8](images/UK8.png)
+![UK8](https://kiranli.github.io/images/UK8.png)
 
 数据已全部清洗完毕，由图可知，CustomerID、InvoiceNo中仍然有重复值，从实际经验分析，CustomerID有重复值，说明客户有重复购买行为，而InvoiceNo中有重复值说明客户一次购买了多种商品，因本文研究的是FRM模型，即可以把每一个不同的InvoiceNo代表一次购买行为发生。
 
@@ -147,7 +147,7 @@ order by R desc, F desc, M desc;
 * 金额总和四舍五入保留小数点后两位：**round(sum(' '),2)**
 * 多注意标点符号错误，especially comma
 
-![UK9](images/UK9.png)
+![UK9](https://kiranli.github.io/images/UK9.png)
 
 ## 2. create RFMscore table
 RFM中三项R,F,M 的评分标准是需要根据行业特点和公司发展战略来定的，每个区间如何定，可以多参考行业报告，对比分析后来确定，因为本文行业是电商行业，所以本文评分标准确定如下：
@@ -194,7 +194,7 @@ create table RFMscore as select *,
 			when M >300 and M <= 1000 then 2 else 1 end) as 'Mscore'
 from RFM;
 ```
-![UK10](images/UK10.png)
+![UK10](https://kiranli.github.io/images/UK10.png)
 
 * 注意 select* 后面的comma别忘记
 
@@ -205,7 +205,7 @@ select ROUND(AVG(Rscore),1) as Ravg,
          ROUND(AVG(Fscore),1) as Favg,
          ROUND(AVG(Mscore),1) as Mavg from RFMscore;
 ```
-![UK11](images/UK11.png)
+![UK11](https://kiranli.github.io/images/UK11.png)
 
 ### -2. create RFMvalue table: 将RFMscore得分 vs. RFMavg平均值，对比后给RFMscore赋予1或0的value，代码如下：
 ```mysql
@@ -215,11 +215,11 @@ create table RFMvalue as select *,
 (case when Mscore > 1 then 1 else 0 end) as Mvalue from RFMscore;
 ```
 
-![UK12](images/UK12.png)
+![UK12](https://kiranli.github.io/images/UK12.png)
 
 ### -3. segment customers： 根据RFM模型理论将客户分层
 
-![UK13](images/UK13.png)
+![UK13](https://kiranli.github.io/images/UK13.png)
 
 根据RFM（图片来源：point小数点）理论，上升箭头表示大于均值，向下箭头表示小于均值。
 写入中文字段前，修改编码：
@@ -241,6 +241,6 @@ create table RFMfinal as select *,
 from RFMvalue;
 ```
 
-![UK14](images/UK14.png)
+![UK14](https://kiranli.github.io/images/UK14.png)
 
 下个篇章将做数据可视化Power BI的练习。
