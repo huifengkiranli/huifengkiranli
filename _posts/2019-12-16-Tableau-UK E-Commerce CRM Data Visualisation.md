@@ -1,7 +1,7 @@
 # Tableau:UK E-Commerce CRM Data Visualisation
 根据之前建立的RFM模型，对客户进行了分层，本文就这些数据作可视化分析和展示，工具是Tableau.
 
-# 客户维度分析
+# (一）客户维度分析
 ## 1. 客户分类占比
 ![1](https://kiranli.github.io/images/tuk1.png)
 
@@ -15,7 +15,7 @@
 
 由图可见， 重要价值客户和重要深耕客户贡献接近80% 的交易额，属于平台需要重点关注的客户群体，重要价值客户购买的产品平均单价是24英镑，而重要深耕客户购买的产品平均单价是14英镑，所以在后期营销活动中可以重点向这两类客户推送不同价格的产品，做到精准营销。
 
-# 区域维度分析
+# （二）区域维度分析
 Tableau里可以对地区作地图展示
 
 ![3](https://kiranli.github.io/images/tuk3.png)
@@ -26,7 +26,7 @@ Tableau里可以对地区作地图展示
 ![4](https://kiranli.github.io/images/tuk4.png)
 
 
-# 建立Dashboard
+# （三）建立Dashboard
 
 ![6](https://kiranli.github.io/images/tuk6.png)
 
@@ -36,7 +36,7 @@ Tableau建立的Dashboard可以点击筛洗按钮，选择需要具体要了解�
 
 至此E-Commerse 的CRM项目的数据分析和可视化报告完成。
 
-# 总结与建议
+# （四）总结与建议
 
 ## 1.客户维度
 
