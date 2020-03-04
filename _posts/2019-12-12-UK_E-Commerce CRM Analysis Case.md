@@ -134,15 +134,34 @@ Notes:  **create table like /as comparison**:
 
 ```mysql
 create table RFM 
-as select CustomerID, InvoiceNo,Quantity,UnitPrice,Country,InvoiceDatetime,
-datediff('2011-12-09',MAX(InvoiceDatetime)) as 'R',
-count(InvoiceNo) as 'F',
+as select CustomerID, MAX(InvoiceNo) as InvoiceNo,MAX(Quantity) as Quantity,MAX(UnitPrice) as UnitPrice,
+MAX(Country) as Country,MAX(InvoiceDatetime) as InvoiceDatetime, 
+DATEDIFF('2011-12-09',MAX(InvoiceDatetime)) as 'R',
+count(DISTINCT InvoiceNo) as 'F',
 round(SUM(Monetary),2) as 'M'
 FROM data3
 group by CustomerID, InvoiceNo,Quantity,UnitPrice,Country,InvoiceDatetime
-order by R desc, F desc, M desc;
+ORDER BY R desc, F desc, M desc;
 ```
-* 注意：group by 后面的字段必须和前面的select后面的字段一样，且最好不用select*
+* 注意：group by 后面的字段必须和前面的select后面的字段一样,除了聚合函数字段，因此将你需要的字段放进max或min函数中，max:支持字符类型、数字类型。
+** group by问题的两种解决办法：**
+
+```mysql
+select 
+max(id) as id,username,password from users
+group by username,password 
+order by id desc
+```
+方法2:
+
+```mysql
+select * from
+(select apple from employee group by apple) as t1
+inner join
+(select distinct englishname from employee where apple in (select apple from employee group by apple )) as t2
+on t1.apple =t2.apple
+```
+
 * 求天数差： **datediff(' ', max())**
 * 金额总和四舍五入保留小数点后两位：**round(sum(' '),2)**
 * 多注意标点符号错误，especially comma
@@ -209,10 +228,10 @@ select ROUND(AVG(Rscore),1) as Ravg,
 
 ### -2. create RFMvalue table: 将RFMscore得分 vs. RFMavg平均值，对比后给RFMscore赋予1或0的value，代码如下：
 ```mysql
-create table RFMvalue as select *,
-(case when Rscore > 3.1 then 1 else 0 end) as Rvalue,
-(case when Fscore > 1 then 1 else 0 end) as Fvalue,
-(case when Mscore > 1 then 1 else 0 end) as Mvalue from RFMscore;
+ create table RFMvalue as select *,
+(case when Rscore > 3.8 then 1 else 0 end) as Rvalue,
+(case when Fscore > 1.3 then 1 else 0 end) as Fvalue,
+(case when Mscore > 2.0 then 1 else 0 end) as Mvalue from RFMscore;
 ```
 
 ![UK12](https://kiranli.github.io/images/UK12.png)
@@ -243,4 +262,4 @@ from RFMvalue;
 
 ![UK14](https://kiranli.github.io/images/UK14.png)
 
-下个篇章将做数据可视化Power BI的练习。
+下个篇章将做数据可视化Tableau的练习。
