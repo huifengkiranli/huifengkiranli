@@ -1,10 +1,10 @@
 # MySQL: UK E-Commerce CRM Analysis
 
-# 1. 这是一个跨国数据集，包含2010年12月1日至2011年12月9日之间在英国注册的非商店在线零售的所有交易。该公司主要销售各种独特的礼品，许多客户是该公司批发商.
-# 2. Operations management issues: 该公司客户主要集中在哪些国家？如何精细化客户群体及进一步营销管理？ 
+# 1. 公司是英国一家特色礼品销售公司，多数客户是礼品批发商，分布主要在欧洲。所以这个项目数据是一个跨国数据集，记录在英国注册的非商店而是online在线零售的所有交易。
+# 2. Operations management issues: 需要分析公司客户主要集中在哪些国家？如何精细化客户群体及进一步营销管理？本文将建立客户价值分析模型RFM来为运营和营销管理提供数据支持
 # 3. Data information: 该数据集时间跨度为2010年12月1日至2011年12月9日，共包含541909条记录，8个字段： CustomerID, InvoiceNo, InvoiceDate, Quantity, UnitPrice, Country，Description, StockCode
 # 4. Data Preparation
-### - 基于RFM模型需要，新建一个表data1，在该表中将去掉两个字段：StockCode和Description, MySQL code 如下：
+### - 基于客户价值分析RFM模型需要，新建表data1，在该表中将去掉两个字段：StockCode和Description, MySQL code 如下：
 
 ``` mysql
 create table data1 
