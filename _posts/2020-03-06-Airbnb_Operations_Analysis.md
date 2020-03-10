@@ -1,4 +1,4 @@
-# 运营分析之Airbnb
+# Operations Analysis运营分析之Airbnb
 本文针对Airbnb在Kaggle提供的真实产品运营数据，对产品运营和用户画像做数据分析(Python&SQL)，运用Tableau形成可视化报告和Dashboard，为运营和营销管理改进提供数据支持。
 <br>文章包括两部分：
 <br> 一. **可视化运营分析和建议报告:** 
@@ -18,26 +18,27 @@
 
 # 一. Airbnb运营分析报告
 ##1. User Profile 用户画像分析
-![](a1)
-![](a2)
-![](a3)
-![](a4)
-![](a5)
+![](https://kiranli.github.io/images/a1.png)
+![](https://kiranli.github.io/images/a1.png)
+![](https://kiranli.github.io/images/a3.png)
+![](https://kiranli.github.io/images/a4.png)
+![](https://kiranli.github.io/images/a5.png)
 
 ## 2. Channel Marketing Analysis 渠道推广分析
-![](a8)
-![](a6)
-![](a7)
-![](a9)
+![](https://kiranli.github.io/images/a8.png)
+![](https://kiranli.github.io/images/a6.png)
+![](https://kiranli.github.io/images/a7.png)
+![](https://kiranli.github.io/images/a9.png)
 
 <br> **Interactive Dashboard**
-![](a10)
+<br> Tableau建立动态化的工作台，方便以全局来检查分析是否有环节遗漏。
+![](https://kiranli.github.io/images/a10.png)
 
 ## 3. Funnel Analysis 转化漏斗分析
 **Funnel analysis** is a powerful analytics method that shows the conversion between the most important steps of the user journey. Funnels are an extremely useful and helpful data tool that can provide you a great overview about your product. In a nutshell, funnels are representing several events your users perform one after another. Calculating how many unique users made each event could show you a conversion rate between each step, so you could actually localize a problem down to a certain stage.
 <br> **AARRR Funnel Framework：** 在AARRR Funnel Framework工作框架中，第一个A是Acquire，即用户获取，提高新用户获取的数量和质量是非常重要的，需要不断监测并优化的一个工作，哪些渠道的推广效果更好，企业就要及时调整和增加此渠道的投入，哪些渠道的效果很差，就要及时查找原因并给出解决。
 <br>**转化漏斗分析**也是数据分析环节的重要指标，可以从宏观角度了解整个产品的业务转化情况，企业针对流失率较高的漏斗环节进行改进，可以有效促进业务发展。
-![](a11)
+![](https://kiranli.github.io/images/a11.png)
 
 ## 4. 分析总结
 ###（1). User Profile 用户画像总结
