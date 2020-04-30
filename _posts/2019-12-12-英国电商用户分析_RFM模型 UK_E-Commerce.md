@@ -1,4 +1,4 @@
-# MySQL: UK E-Commerce CRM Analysis
+# MySQL: UK E-Commerce CRM Analysis——RFM Model
 
 # 1. 公司是英国一家特色礼品销售公司，多数客户是礼品批发商，分布主要在欧洲。所以这个项目数据是一个跨国数据集，记录在英国注册的非商店而是online在线零售的所有交易。
 # 2. Operations management issues: 需要分析公司客户主要集中在哪些国家？如何精细化客户群体及进一步营销管理？本文将建立客户价值分析模型RFM来为运营和营销管理提供数据支持。
