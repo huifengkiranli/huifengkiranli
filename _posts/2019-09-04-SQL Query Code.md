@@ -1,4 +1,138 @@
-SQL query code
+SQL Query Code
+
+* Case:电商RFM MODEL
+
+```mysql
+# 新建表格，选取原表格部分字段
+create table data1 
+as select CustomerID,InvoiceNo,InvoiceDate,Quantity,UnitPrice,Country from UK_data;
+
+# 统计缺失值null
+select sum(case when CustomerID is null then 1 else 0 end) as 'sum_customerid',
+       sum(case when InvoiceNo  is null then 1 else 0 end) as 'sum_invocieNo',
+       sum(case when InvoiceDate is null then 1 else 0 end) as 'sum_invoiceDate',
+       sum(case when Quantity    is null then 1 else 0 end) as 'sum_quantity',
+       sum(case when UnitPrice   is null then 1 else 0 end) as 'sun_unitprice',
+       sum(case when Country     is null then 1 else 0 end)as 'sum_country'
+from data1;
+# 创建新表，将null值的字段转为0
+create table data2 
+select coalesce(CustomerID,0)as CustomerID,InvoiceNo,InvoiceDate,Quantity,UnitPrice,Country from data1;
+
+# 查找异常值 
+select max(InvoiceDate),min(InvoiceDate), max(Quantity),min(Quantity),max(UnitPrice),min(UnitPrice)
+from data2;
+# 处理UnitPrice的异常值 
+select * from data2 where UnitPrice <=0;
+delete from data2 where UnitPrice <=0;
+
+# 日期格式处理：新增日期列，格式化日期 str_to_date(),删除旧日期列 
+alter table data2 add column InvoiceDatetime varchar(255) not NULL
+update data2 set InvoiceDatetime = STR_TO_DATE(InvoiceDate,'%m/%d/%Y %H:%i')
+alter table data2 drop InvoiceDate;
+
+# 新增列Monetary 
+alter table data2 add column Monetary float not NULL
+update data2 set Monetary = Quantity*UnitPrice;
+
+# 复制表格 
+create table data3 like data2
+insert into data3 select distinct* from data2 
+select * from data3;
+
+# RFM模型 
+create table RFM 
+as select CustomerID, MAX(InvoiceNo) as InvoiceNo,MAX(Quantity) as Quantity,MAX(UnitPrice) as UnitPrice,
+MAX(Country) as Country,MAX(InvoiceDatetime) as InvoiceDatetime, 
+DATEDIFF('2011-12-09',MAX(InvoiceDatetime)) as 'R',
+count(DISTINCT InvoiceNo) as 'F',
+round(SUM(Monetary),2) as 'M'
+FROM data3
+group by CustomerID, InvoiceNo,Quantity,UnitPrice,Country,InvoiceDatetime
+ORDER BY R desc, F desc, M desc;
+
+# RFM 评分表 
+create table RFMscore as select *,
+(case when R <=30 then 5
+      when R >30 and R <=90 then 4
+      when R >90 and R <= 180 then 3
+      when R >180 and R <365 then 2 else 1 end) as 'Rscore',
+(case when F >80 then 5
+      when F >20 and F <=80 then 4
+      when F >10 and F <=20 then 3
+      when F >5 and F <=10 then 2 else 1 end) as 'Fscore',
+(case when M > 10000 then 5
+      when M > 5000 and M <= 10000 then 4
+      when M >1000 and M <=5000 then 3
+      when M >300 and M <= 1000 then 2 else 1 end) as 'Mscore'
+from RFM;
+
+# 求平均值 
+select ROUND(AVG(Rscore),1) as Ravg,
+       ROUND(AVG(Fscore),1) as Favg,
+			 ROUND(AVG(Mscore),1) as Mavg from RFMscore;
+		 
+ # RFMvalue 计算分数
+ create table RFMvalue as select *,
+(case when Rscore > 3.8 then 1 else 0 end) as Rvalue,
+(case when Fscore > 1.3 then 1 else 0 end) as Fvalue,
+(case when Mscore > 2.0 then 1 else 0 end) as Mvalue from RFMscore;
+
+# RFM 客户贴标签
+create table RFMfinal as select *,
+(case when Rvalue=1 and Fvalue=1 and Mvalue=1 then '重要价值客户' 
+      when Rvalue=0 and Fvalue=1 and Mvalue=1 then '重要唤回客户'
+      when Rvalue=1 and Fvalue=0 and Mvalue=1 then '重要深耕客户' 
+      when Rvalue=1 and Fvalue=1 and Mvalue=0 then '潜力客户'
+      when Rvalue=0 and Fvalue=0 and Mvalue=1 then '重要挽留客户' 
+      when Rvalue=1 and Fvalue=0 and Mvalue=0 then '新客户' 
+      when Rvalue=0 and Fvalue=1 and Mvalue=0 then '一般维持客户' 
+  else '流失客户' end) as '客户分类'
+	from RFMvalue;
+```
+
+* Case:AARRR model建立
+
+```mysql
+#用户总数量：对sessions表中的user_id进行group by，再统计数量,或者 count(distinct user_id)也可以。
+SELECT COUNT(*)  AS 'user_amount'
+FROM (SELECT user_id FROM sessions GROUP BY user_id) 
+	as total_session;
+
+#活跃用户的定义：用户操作产品大于等于10次。
+SELECT COUNT(*)  AS 'active_user_amount'
+FROM (SELECT user_id FROM sessions GROUP BY user_id 
+HAVING COUNT(user_id) >= 10)
+	as activation;
+
+#注册用户：通过sessions表中的用户与注册用户表进行内关联，统计出已注册用户数量
+SELECT COUNT(*) AS 'register_user_amount'
+FROM (SELECT user_id FROM sessions GROUP BY user_id) as s
+	INNER JOIN train_users_2 ON s.user_id = train_users_2.id;
+
+#下单用户：用户行为中’reservations‘，统计“reservations”的用户（group by去重）。
+SELECT COUNT(*) AS 'booking_user_amount'
+FROM (SELECT user_id FROM sessions WHERE action_detail = 'reservations' 
+	GROUP BY user_id) 
+		as booking;
+
+#实际支付用户：用户行为中'payment_instruments'，group by去重
+SELECT COUNT(*) AS 'checkout_user_amount'
+FROM (SELECT user_id FROM sessions WHERE action_detail = 'payment_instruments' 
+	GROUP BY user_id) 
+	as checkout;
+
+#复购用户：用户行为‘payment_instruments’操作次数大于1次的用户，group by去重
+SELECT COUNT(*) AS 'repurhcase_user_amount'
+FROM (SELECT user_id FROM sessions WHERE action_detail = 'reservations' 
+	GROUP BY user_id HAVING COUNT(user_id) >= 2) repurchase;
+	
+#新建表存储查询结果 
+create table funnel (event VARCHAR (20) primary KEY, user_amount INT (10));
+
+insert into funnel values ('Acquisition',135484),('Activation',114001),
+	('Register',73815),('Booking',10367),('Checkout',9019),('Repurchase',5446);
+```
 
 * Case:定期存款客户用户画像
 
