@@ -194,3 +194,67 @@ from loan;
 # 删除null记录，where条件
 delete from loan where annual_inc is null;
 ```
+
+* Window function_排名
+
+```mysql
+create table TEST_ROW_NUMBER_OVER(
+       room_id varchar(10) not null,
+       name varchar(10) null,
+       age varchar(10) null,
+       salary int null
+);
+select * from TEST_ROW_NUMBER_OVER;
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(1,'a',10,8000);
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(1,'a2',11,6500);
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(2,'b',12,13000);
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(2,'b2',13,4500);
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(3,'c',14,3000);
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(3,'c2',15,20000);
+insert into TEST_ROW_NUMBER_OVER(room_id,name,age,salary) values(4,'d',16,30000);
+
+# 在使用over等开窗函数时，over里头的分组及排序的执行晚于“where，group by，order by”的执行。
+# ROW_NUMBER()按行排序号
+select room_id, name, age, salary, row_number() over (order by salary desc) rn 
+from TEST_ROW_NUMBER_OVER;
+
+# over(partition by  order by) 分组排名
+select room_id,name,age,salary,row_number()over(partition by room_id order by salary desc) rn 
+from TEST_ROW_NUMBER_OVER;
+# 全选分组后的排名，不能省略最后的t1
+select  * from (
+select room_id,name,age,salary,row_number() over(partition by room_id order by salary desc) rn 
+from TEST_ROW_NUMBER_OVER
+) t1;
+
+# 每组salary排名第二名之前的：分组排名 over(partition by  order by)再选第一名
+select  * from (
+select room_id,name,age,salary,row_number() over(partition by room_id order by salary desc) rn 
+from TEST_ROW_NUMBER_OVER
+) t1
+where t1.rn<2;
+
+# 排名后，选出每组年龄在13-16岁之间的
+select room_id,name,age,salary,row_number()over(order by salary desc) rn
+from TEST_ROW_NUMBER_OVER t 
+where t.age between '13' and '16';
+
+# with as 用法 
+with tabs as
+(select room_id, name, age, salary, row_number()over(partition by room_id order by salary desc) rn
+    from TEST_ROW_NUMBER_OVER t)
+select * from tabs 
+where rn=1;
+
+# rank()over 同分同排名不跳跃
+select room_id,name,age,salary,rank()over(order by salary desc) rk 
+from TEST_ROW_NUMBER_OVER t;
+
+# DENSE_RANK()over 同分同排名但跳跃
+select room_id,name,age,salary, DENSE_RANK() over(order by salary desc) dr 
+from TEST_ROW_NUMBER_OVER t;
+
+# NTILE(4)分组函数，按salary分成4个组
+select room_id,name,age,salary, NTILE(4) over(order by salary desc) rn
+from TEST_ROW_NUMBER_OVER t;
+'''
