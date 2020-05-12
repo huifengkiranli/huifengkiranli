@@ -1,4 +1,4 @@
-MySQL&Tableau:P2P贷款用户画像分析 
+MySQL&Tableau:P2P产品用户画像及行为分析 
 
 # 一、分析背景
 
