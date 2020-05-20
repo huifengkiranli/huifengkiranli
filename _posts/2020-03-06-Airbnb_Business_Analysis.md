@@ -1,3 +1,5 @@
+Airbnb_Business_Analysis
+
 # Airbnb运营分析：用户画像，用户行为及渠道分析
 本文针对Airbnb在Kaggle提供的真实产品运营数据，对产品运营和用户画像做数据分析(Python&SQL)，运用Tableau形成可视化报告和Dashboard，为运营和营销管理改进提供数据支持。
 <br>文章包括两部分：
