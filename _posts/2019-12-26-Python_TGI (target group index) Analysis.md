@@ -1,3 +1,4 @@
+# Python_TGI (target group index) Analysis
 # TGI指标：Python分析电商客群特征
 
 # 电商全国销售数据，对比分析各省市销售额
