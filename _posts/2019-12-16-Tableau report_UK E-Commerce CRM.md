@@ -1,4 +1,6 @@
-# Tableau:UK E-Commerce CRM 数据可视化
+# Tableau:UK E-Commerce CRM report
+
+# 数据可视化
 根据之前建立的RFM模型，对客户进行了分层，本文就这些数据作可视化分析和展示，工具是Tableau.
 
 # (一）客户维度分析
